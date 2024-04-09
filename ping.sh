@@ -1,4 +1,6 @@
-#!/bin/bash
+#! Script By: Keripik Kinta
+# TAMBAHKAN DI STARTUP RC.LOCAL
+# (sleep 60 && /www/ping-monitor/ping.sh) &
 
 # Fungsi untuk menulis log saat status koneksi OFFLINE
 write_offline_log() {
