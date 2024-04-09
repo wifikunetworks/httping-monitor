@@ -1,4 +1,4 @@
-#! Script by: Keripik Kinta
+#! Script By: Keripik Kinta
 # TAMBAHKAN DI STARTUP RC.LOCAL
 # (sleep 60 && /www/ping-monitor/ping.sh) &
 
