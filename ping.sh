@@ -2,13 +2,13 @@
 
 # Fungsi untuk menulis log saat status koneksi OFFLINE
 write_offline_log() {
-    echo "$(date +"%A %d %B %Y %T") Status: OFFLINE $1" >> /etc/modem/log.txt
+    echo "$(date +"%A %d %B %Y Pukul: %T") Status: OFFLINE $1" >> /etc/modem/log.txt
 }
 
 # Fungsi untuk menulis log saat status koneksi ONLINE
 write_online_log() {
     local ping_result=$(ping -c 1 $ping_target | grep "time=" | cut -d "=" -f 4 | cut -d " " -f 1)
-    echo "$(date +"%A %d %B %Y %T") Status: ONLINE response time=${ping_result} ms" >> /etc/modem/log.txt
+    echo "$(date +"%A %d %B %Y Pukul: %T") Status: ONLINE response time=${ping_result} ms" >> /etc/modem/log.txt
 }
 
 # Fungsi untuk menunggu selama waktu yang ditentukan
@@ -38,7 +38,7 @@ max_retry=5
 next_online_log_time=$(date +%s)
 
 # Alamat IP atau domain yang akan di-ping untuk memeriksa koneksi
-ping_target="8.8.8.8" # Default ping target adalah alamat IP Google DNS
+ping_target="google.com" # Default ping target adalah alamat IP Google DNS
 
 # Cek apakah ping_target adalah alamat IP atau domain
 if [[ $ping_target =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
