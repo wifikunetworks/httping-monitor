@@ -2,13 +2,13 @@
 
 # Fungsi untuk menulis log saat status koneksi OFFLINE
 write_offline_log() {
-    echo "$(date +"%A %d %B %Y %T") Status: MATI $1" >> /etc/modem/log.txt
+    echo "$(date +"%A %d %B %Y %T") Status: OFFLINE $1" >> /etc/modem/log.txt
 }
 
 # Fungsi untuk menulis log saat status koneksi ONLINE
 write_online_log() {
-    local ping_value=$1
-    echo "$(date +"%A %d %B %Y %T") Status: HIDUP $ping_value" >> /etc/modem/log.txt
+    local ping_result=$(ping -c 1 $ping_target | grep "time=" | cut -d "=" -f 4 | cut -d " " -f 1)
+    echo "$(date +"%A %d %B %Y %T") Status: ONLINE response time=${ping_result} ms" >> /etc/modem/log.txt
 }
 
 # Fungsi untuk menunggu selama waktu yang ditentukan
@@ -53,13 +53,11 @@ while true; do
     start_time=$(date +%s)
     
     # Cek koneksi internet dengan ping ke alamat IP atau domain yang ditentukan
-    ping_output=$( $ping_command )
-    if echo "$ping_output" | grep -q "time="; then
+    if $ping_command &> /dev/null; then
         # Jika ping berhasil (berarti koneksi online)
         offline_count=0
-        ping_value=$( echo "$ping_output" | grep -oP "time=\K[0-9.]+")
         if [ $(date +%s) -ge $next_online_log_time ]; then
-            write_online_log "$ping_value"
+            write_online_log
             next_online_log_time=$((next_online_log_time + online_log_interval))
         fi
     else
