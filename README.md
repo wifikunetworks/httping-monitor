@@ -5,5 +5,5 @@ wget --no-check-certificate -N -P /www/ping-monitor/ https://raw.githubuserconte
 
 TAMBAHKAN DI STARTUP RC.LOCAL
 ~~~
-(sleep 60 && /www/ping-monitor/ping.sh) &
+(sleep 80 && /www/ping-monitor/ping.sh) &
 ~~~
