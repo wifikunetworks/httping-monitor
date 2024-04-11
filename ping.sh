@@ -31,7 +31,7 @@ offline_log_interval=5
 online_log_interval=60
 
 # Variabel untuk menentukan jumlah maksimum percobaan koneksi offline sebelum melakukan restart modem dan interface
-max_retry=5
+max_retry=15
 
 # Waktu awal untuk penulisan log saat status koneksi ONLINE
 next_online_log_time=$(date +%s)
