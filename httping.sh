@@ -36,25 +36,25 @@ max_retry=15
 # Waktu awal untuk penulisan log saat status koneksi ONLINE
 next_online_log_time=$(date +%s)
 
-# Alamat IP yang akan di-ping untuk memeriksa koneksi
-ping_target="8.8.8.8"
+# URL yang akan di-httping untuk memeriksa koneksi
+httping_target="1.1.1.1"  
 
 # Loop utama
 while true; do
     # Waktu awal untuk pengecekan
     start_time=$(date +%s)
     
-    # Cek koneksi internet dengan ping ke alamat IP yang ditentukan
-    if ping -c 1 -W 1 $ping_target &> /dev/null; then
-        # Jika ping berhasil (berarti koneksi online)
+    # Cek koneksi internet dengan httping ke URL yang ditentukan
+    if httping -c 1 -t 1 $httping_target &> /dev/null; then
+        # Jika httping berhasil (berarti koneksi online)
         offline_count=0
         if [ $(date +%s) -ge $next_online_log_time ]; then
-            ping_result=$(ping -c 1 -W 1 $ping_target | awk -F'/' 'END { print $5 }')
-            write_online_log $ping_result
+            httping_result=$(httping -c 1 -t 1 $httping_target | grep 'time=' | awk -F 'time=' '{print $2}' | awk '{print $1}')
+            write_online_log $httping_result
             next_online_log_time=$((next_online_log_time + online_log_interval))
         fi
     else
-        # Jika ping gagal (berarti koneksi offline)
+        # Jika httping gagal (berarti koneksi offline)
         ((offline_count++))
         write_offline_log "Failed $offline_count out of $max_retry"
         # Jika offline lebih dari jumlah maksimum percobaan
